@@ -1,7 +1,7 @@
-package config
+package database
 
 import (
-	"challenge-client-server/Entities"
+	"challenge-client-server/entities"
 	"challenge-client-server/utils"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -14,6 +14,6 @@ func InitDB() {
 	Db, err = gorm.Open(sqlite.Open("client-server.db"), &gorm.Config{})
 	utils.HandlerError(err)
 
-	err = Db.AutoMigrate(&Entities.Quotation{})
+	err = Db.AutoMigrate(&entities.Quotation{})
 	utils.HandlerError(err)
 }

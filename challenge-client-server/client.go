@@ -1,8 +1,10 @@
 package main
 
 import (
+	"challenge-client-server/entities"
 	"challenge-client-server/utils"
 	"context"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -36,8 +38,11 @@ func main() {
 
 	body, err := io.ReadAll(resp.Body)
 	utils.HandlerError(err)
-
-	err = os.WriteFile("cotacao.txt", []byte("Dólar: "+string(body)), 0644)
+	var q entities.Quotation
+	err = json.Unmarshal(body, &q)
 	utils.HandlerError(err)
-	fmt.Println("Quotation saved in cotacao.txt")
+
+	err = os.WriteFile("cotacao.txt", []byte("Dólar: "+q.Bid), 0644)
+	utils.HandlerError(err)
+	fmt.Println("Quotation", q.Bid, "saved in cotacao.txt")
 }

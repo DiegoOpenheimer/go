@@ -1,24 +1,24 @@
 package main
 
 import (
-	"challenge-client-server/Entities"
-	"challenge-client-server/config"
+	"challenge-client-server/database"
+	"challenge-client-server/entities"
 	"challenge-client-server/utils"
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
 	"log"
 	"net/http"
 	"os"
-	"strconv"
 	"time"
 
 	"github.com/valyala/fastjson"
 )
 
 func init() {
-	config.InitDB()
+	database.InitDB()
 }
 
 func main() {
@@ -37,7 +37,7 @@ func middlewareError(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		defer func() {
 			if r := recover(); r != nil {
-				if errors.Is(r.(error), context.DeadlineExceeded) {
+				if _, ok := r.(error); ok && errors.Is(r.(error), context.DeadlineExceeded) {
 					fmt.Println("Timeout exceeded", r)
 					http.Error(w, "Timeout exceeded", http.StatusRequestTimeout)
 					return
@@ -66,16 +66,16 @@ func handlerQuotation(w http.ResponseWriter, r *http.Request) {
 	var p fastjson.Parser
 	value, err := p.ParseBytes(bodyInBytes)
 	utils.HandlerError(err)
-	rawBid := value.GetStringBytes("USDBRL", "bid")
-	bid, err := strconv.ParseFloat(string(rawBid), 64)
+	var quotation entities.Quotation
+	err = json.Unmarshal(value.GetObject("USDBRL").MarshalTo(nil), &quotation)
 	utils.HandlerError(err)
 
 	ctxDB, cancel := context.WithTimeout(r.Context(), time.Millisecond*10)
 	defer cancel()
-	config.Db.WithContext(ctxDB).Create(&Entities.Quotation{Value: bid})
+	result := database.Db.WithContext(ctxDB).Create(&quotation)
+	utils.HandlerError(result.Error)
 
-	w.WriteHeader(http.StatusOK)
-	w.Header().Set("Content-Type", "text/plain")
-	_, _ = w.Write([]byte(strconv.FormatFloat(bid, 'f', -1, 64)))
-	fmt.Println("Current quote", bid)
+	err = json.NewEncoder(w).Encode(quotation)
+	utils.HandlerError(err)
+	fmt.Println("Current quote", quotation.Bid)
 }
