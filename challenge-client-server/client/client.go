@@ -1,8 +1,8 @@
 package main
 
 import (
-	"challenge-client-server/entities"
-	"challenge-client-server/utils"
+	"challenge-client/entities"
+	"challenge-client/utils"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -17,10 +17,8 @@ func main() {
 	if port == "" {
 		port = "8080"
 	}
-
 	ctx, cancel := context.WithTimeout(context.Background(), time.Millisecond*300)
 	defer cancel()
-
 	req, err := http.NewRequestWithContext(ctx, "GET", fmt.Sprintf("http://localhost:%s/cotacao", port), nil)
 	utils.HandlerError(err)
 	resp, err := http.DefaultClient.Do(req)

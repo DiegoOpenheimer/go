@@ -1,8 +1,8 @@
 package database
 
 import (
-	"challenge-client-server/entities"
-	"challenge-client-server/utils"
+	"challenge-server/entities"
+	"challenge-server/utils"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )

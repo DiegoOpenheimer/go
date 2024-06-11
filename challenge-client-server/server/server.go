@@ -1,9 +1,9 @@
 package main
 
 import (
-	"challenge-client-server/database"
-	"challenge-client-server/entities"
-	"challenge-client-server/utils"
+	"challenge-server/database"
+	"challenge-server/entities"
+	"challenge-server/utils"
 	"context"
 	"encoding/json"
 	"errors"
