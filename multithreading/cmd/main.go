@@ -37,7 +37,6 @@ func main() {
 		}
 		utils.HandleError(err)
 		ch <- Response{Api: "Via Cep", Data: result}
-		cancel()
 	}()
 	go func() {
 		var brazilApi services.BrazilApi
@@ -47,7 +46,6 @@ func main() {
 		}
 		utils.HandleError(err)
 		ch <- Response{Api: "Brasil", Data: result}
-		cancel()
 	}()
 
 	select {
