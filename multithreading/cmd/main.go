@@ -4,19 +4,16 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/DiegoOpenheimer/go/multithreading/pgk/models"
 	"github.com/DiegoOpenheimer/go/multithreading/pgk/services"
 	"github.com/DiegoOpenheimer/go/multithreading/pgk/utils"
 	"os"
 	"time"
 )
 
-type DataResponse interface {
-	JSON() string
-}
-
 type Response struct {
 	Api  string
-	Data DataResponse
+	Data models.ZipCodeResponse
 }
 
 func main() {

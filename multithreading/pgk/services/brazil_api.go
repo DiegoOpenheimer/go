@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/DiegoOpenheimer/go/multithreading/pgk/models"
 	"io"
 	"net/http"
 )
@@ -19,12 +20,12 @@ type BrazilZipCode struct {
 
 type BrazilApi struct{}
 
-func (z *ZipCode) JSON() string {
-	result, _ := json.MarshalIndent(&z, "", "  ")
+func (b *BrazilZipCode) JSON() string {
+	result, _ := json.MarshalIndent(&b, "", "  ")
 	return string(result)
 }
 
-func (b BrazilApi) GetZipCodeWithContext(ctx context.Context, zipCode string) (*BrazilZipCode, error) {
+func (b BrazilApi) GetZipCodeWithContext(ctx context.Context, zipCode string) (models.ZipCodeResponse, error) {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf("https://brasilapi.com.br/api/cep/v1/%s", zipCode), nil)
 	if err != nil {
 		return nil, err
