@@ -41,7 +41,7 @@ func main() {
 		_ = db.Close()
 	}(db)
 
-	rabbitMQChannel := getRabbitMQChannel()
+	rabbitMQChannel := getRabbitMQChannel(config)
 
 	eventDispatcher := events.NewEventDispatcher()
 	_ = eventDispatcher.Register("OrderCreated", &handler.OrderCreatedHandler{
@@ -104,8 +104,8 @@ func executeMigration(db *sql.DB, driverName string) {
 	_ = m.Steps(1)
 }
 
-func getRabbitMQChannel() *amqp.Channel {
-	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
+func getRabbitMQChannel(config *configs.Conf) *amqp.Channel {
+	conn, err := amqp.Dial(config.RabbitMQURL)
 	if err != nil {
 		panic(err)
 	}

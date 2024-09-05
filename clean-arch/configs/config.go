@@ -1,8 +1,11 @@
 package configs
 
-import "github.com/spf13/viper"
+import (
+	"errors"
+	"github.com/spf13/viper"
+)
 
-type conf struct {
+type Conf struct {
 	DBDriver          string `mapstructure:"DB_DRIVER"`
 	DBHost            string `mapstructure:"DB_HOST"`
 	DBPort            string `mapstructure:"DB_PORT"`
@@ -12,17 +15,28 @@ type conf struct {
 	WebServerPort     string `mapstructure:"WEB_SERVER_PORT"`
 	GRPCServerPort    string `mapstructure:"GRPC_SERVER_PORT"`
 	GraphQLServerPort string `mapstructure:"GRAPHQL_SERVER_PORT"`
+	RabbitMQURL       string `mapstructure:"RABBITMQ_URL"`
 }
 
-func LoadConfig(path string) (*conf, error) {
-	var cfg *conf
-	viper.SetConfigName("app_config")
+func LoadConfig(path string) (*Conf, error) {
+	var cfg *Conf
+	viper.SetConfigName(".env")
 	viper.SetConfigType("env")
 	viper.AddConfigPath(path)
-	viper.SetConfigFile(".env")
 	viper.AutomaticEnv()
+	_ = viper.BindEnv("DB_DRIVER")
+	_ = viper.BindEnv("DB_HOST")
+	_ = viper.BindEnv("DB_PORT")
+	_ = viper.BindEnv("DB_USER")
+	_ = viper.BindEnv("DB_PASSWORD")
+	_ = viper.BindEnv("DB_NAME")
+	_ = viper.BindEnv("WEB_SERVER_PORT")
+	_ = viper.BindEnv("GRPC_SERVER_PORT")
+	_ = viper.BindEnv("GRAPHQL_SERVER_PORT")
+	_ = viper.BindEnv("RABBITMQ_URL")
 	err := viper.ReadInConfig()
-	if err != nil {
+	var configFileNotFoundError viper.ConfigFileNotFoundError
+	if err != nil && !errors.As(err, &configFileNotFoundError) {
 		panic(err)
 	}
 	err = viper.Unmarshal(&cfg)
