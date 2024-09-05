@@ -13,6 +13,9 @@ Para iniciar todos os serviços (MySQL, RabbitMQ e o sistema de pedidos), execut
 
 ```sh
 docker-compose up --build
+
+Pode usar o arquivo Makefile para executar o comando acima, basta executar o comando abaixo:
+make run
 ```
 
 Este comando irá:
