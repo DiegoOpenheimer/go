@@ -1,5 +1,9 @@
 # Project Documentation
 
+## Link google cloud run
+- https://temperature-969535875691.us-central1.run.app/78050-328
+- https://temperature-969535875691.us-central1.run.app/{CEP}
+
 ## Overview
 
 This project is a Go application that provides a web service to get temperature information based on a zip code. It uses the `chi` router for handling HTTP requests and integrates with external APIs to fetch zip code and temperature data.
