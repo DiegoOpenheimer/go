@@ -11,6 +11,7 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
+	"math/big"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -74,7 +75,7 @@ func (suite *APITestSuite) TestGetTemperatureNotFound() {
 }
 
 func (suite *APITestSuite) TestGetTemperatureValidResponse() {
-	resp, err := http.Get(fmt.Sprintf("%s/37561190", suite.server.URL))
+	resp, err := http.Get(fmt.Sprintf("%s/78050-328", suite.server.URL))
 	require.NoError(suite.T(), err, "Failed to make GET request")
 
 	defer resp.Body.Close()
@@ -93,7 +94,10 @@ func (suite *APITestSuite) TestGetTemperatureValidResponse() {
 	suite.Greater(tempK, 0.0, "Expected temp_K to be greater than 0")
 	tempC := result["temp_C"].(float64)
 	suite.Greater(tempC, 0.0, "Expected temp_C to be greater than 0")
-	suite.True(tempC == tempK-273, "Expected temp_C to be equal to temp_K - 273")
+	epsilon := 0.0001
+	valueToCompare := new(big.Float).Sub(big.NewFloat(tempK), big.NewFloat(273))
+	diff := new(big.Float).Sub(big.NewFloat(tempC), valueToCompare)
+	suite.True(diff.Abs(diff).Cmp(big.NewFloat(epsilon)) <= 0, fmt.Sprintf("Expected temp_C to be approximately equal to temp_K - 273, tempC %f, tempK %f and result %f", tempC, tempK, tempK-273))
 }
 
 func TestApiTestSuite(t *testing.T) {
