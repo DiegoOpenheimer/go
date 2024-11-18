@@ -13,13 +13,13 @@ COPY . .
 RUN apk update && \
     apk add --no-cache git && \
     go mod download && \
-    go build ./cmd/deploy_cloud_run
+    go build -o temperature ./cmd/.
 
 # Segunda etapa - Imagem final
 FROM alpine:latest
 
 # Copiar o executável do diretório de compilação para a imagem final
-COPY --from=builder /app/deploy_cloud_run /usr/local/bin/deploy_cloud_run
+COPY --from=builder /app/temperature /usr/local/bin/temperature
 
 # Definir argumentos padrão
-ENTRYPOINT ["deploy_cloud_run"]
+ENTRYPOINT ["temperature"]
