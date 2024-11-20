@@ -2,6 +2,7 @@ package configs
 
 import (
 	"errors"
+
 	"github.com/spf13/viper"
 )
 

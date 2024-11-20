@@ -1,8 +1,8 @@
 # Project Documentation
 
 ## Link google cloud run
-- https://temperature-969535875691.us-central1.run.app/78050-328
-- https://temperature-969535875691.us-central1.run.app/{CEP}
+- https://temperature-969535875691.us-central1.run.app/78050-328 (disabled)
+- https://temperature-969535875691.us-central1.run.app/{CEP} (disabled)
 
 ## Overview
 
