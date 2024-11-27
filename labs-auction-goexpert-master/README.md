@@ -1,7 +1,7 @@
 # Auction Project
 
 ## Description
-This study project is an auction system developed in Go. It allows creating auctions, placing bids, and automatically closing auctions after a time interval.
+This study project is an auction system developed in Go. It allows creating auctions, placing bids, and automatically closing auctions after a time interval, this implementation is in create_auction_usecase.
 
 ## How to Run
 
