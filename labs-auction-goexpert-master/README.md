@@ -11,18 +11,12 @@ This study project is an auction system developed in Go. It allows creating auct
 
 ### Steps to Run
 
-1. Clone the repository:
-   ```sh
-   git clone https://github.com/DiegoOpenheimer/go/tree/main/labs-auction-goexport-master
-   cd auction_project
-   ```
-
-2. Install dependencies:
+1. Install dependencies:
    ```sh
    go mod tidy
    ```
 
-3. Configure environment variables:
+2. Configure environment variables:
    ```sh
    export AUCTION_INTERVAL="5m" # Auction interval time
    export AUCTION_DURATION="1h" # Auction duration
@@ -35,7 +29,7 @@ This study project is an auction system developed in Go. It allows creating auct
    export MONGODB_DB="auctions" # MongoDB database name
    ```
 
-4. Run the project:
+3. Run the project:
    ```sh
    go run main.go
    ```
