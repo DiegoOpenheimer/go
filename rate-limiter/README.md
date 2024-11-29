@@ -80,7 +80,3 @@ These tests use `miniredis` to simulate a Redis server and validate the rate lim
 - `internal/usecases`: Business logic for rate limiting.
 - `internal/infra/storage`: Redis storage implementation.
 - `test/e2e`: End-to-end tests.
-
-## License
-
-This project is licensed under the MIT License. See the `LICENSE` file for details.
