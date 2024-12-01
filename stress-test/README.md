@@ -15,7 +15,7 @@ A command-line tool written in Go for stress testing APIs. This project allows y
 
 ## Installation
 
-Clone the repository and build the application:
+Clone the repository and build the application
 
 ## Usage
 
@@ -28,7 +28,7 @@ Run the application with the following arguments:
 Example:
 
 ```bash
-./stress-test --url=https://viacep.com.br/ws/66813880/json --requests=100 --concurrency=10
+./stress-test --url=<API_URL> --requests=100 --concurrency=10
 ```
 
 ## Configuration
@@ -42,12 +42,34 @@ The application uses the following environment variables for configuration:
 Set the environment variables:
 
 ```bash
-export URL=https://viacep.com.br/ws/66813880/json
+export URL=<API_URL>
 export REQUESTS=100
 export CONCURRENCY=10
 ```
 
 Alternatively, you can pass these values directly as command-line arguments.
+
+## Running with Docker
+
+You can also run the application using Docker. The project is available as a Docker image hosted on Docker Hub.
+
+### Pull the image
+
+You can build the dockerfile or Pull the Docker image from Docker Hub:
+
+```bash
+docker pull diegoopenheimer/stress-test
+```
+
+### Run the application
+
+Run the application using the Docker image:
+
+```bash
+docker run --rm --name stress-test diegoopenheimer/stress-test --url=https://www.google.com --requests=100 --concurrency=10
+```
+
+The `--rm` flag ensures the container is removed after execution. Replace the `--url`, `--requests`, and `--concurrency` values as needed.
 
 ## Validation Errors
 
@@ -56,12 +78,3 @@ The application validates the input parameters and provides meaningful error mes
 - **Missing URL**: `Error: URL is required.`
 - **Invalid URL**: `Error: URL must be a valid URL.`
 
-## Development
-
-### Dependencies
-
-Install dependencies with:
-
-```bash
-go mod tidy
-```
