@@ -38,8 +38,8 @@ func (st *StressTest) Execute(input StressTestInput) (StressTestOutput, error) {
 	stressTestOutput := make(StressTestOutput)
 	start := time.Now()
 	var wg sync.WaitGroup
-	numberRequests := int64(input.Requests)
-	for i := 0; i < input.Concurrency; i++ {
+	numberRequests := int64(0)
+	for range input.Concurrency {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
@@ -48,7 +48,7 @@ func (st *StressTest) Execute(input StressTestInput) (StressTestOutput, error) {
 	}
 	wg.Wait()
 	stressTestOutput["totalTime"] = time.Since(start).String()
-	stressTestOutput["totalRequests"] = strconv.Itoa(input.Requests - int(numberRequests))
+	stressTestOutput["totalRequests"] = strconv.Itoa(int(numberRequests))
 	return stressTestOutput, nil
 }
 
@@ -73,10 +73,10 @@ func (st *StressTest) validate(input StressTestInput) error {
 
 func (st *StressTest) worker(input StressTestInput, stressTestOutput *StressTestOutput, numberRequests *int64) {
 	for {
-		if *numberRequests <= 0 {
-			break
+		if *numberRequests >= int64(input.Requests) {
+			return
 		}
-		atomic.AddInt64(numberRequests, -1)
+		atomic.AddInt64(numberRequests, 1)
 		result, err := st.webService.Request(input.URL)
 		st.mu.Lock()
 		if err != nil {
