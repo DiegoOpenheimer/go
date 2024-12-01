@@ -41,7 +41,7 @@ func runCommand(useCase usecase.StressTestUseCase) RunnableCommand {
 		bar := progressbar.NewOptions(cfg.Requests,
 			progressbar.OptionSetWriter(ansi.NewAnsiStdout()), //you should install "github.com/k0kubun/go-ansi"
 			progressbar.OptionEnableColorCodes(true),
-			progressbar.OptionSetDescription("Running..."),
+			progressbar.OptionSetDescription(fmt.Sprintf("Running %s", cfg.Url)),
 			progressbar.OptionSetTheme(progressbar.Theme{
 				Saucer:        "[green]=[reset]",
 				SaucerHead:    "[green]>[reset]",
@@ -94,6 +94,4 @@ func init() {
 	_ = viper.BindPFlag("url", rootCommand.PersistentFlags().Lookup("url"))
 	_ = viper.BindPFlag("requests", rootCommand.PersistentFlags().Lookup("requests"))
 	_ = viper.BindPFlag("concurrency", rootCommand.PersistentFlags().Lookup("concurrency"))
-
-	_ = rootCommand.MarkPersistentFlagRequired("url")
 }
